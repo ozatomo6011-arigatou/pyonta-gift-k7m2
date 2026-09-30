@@ -99,6 +99,7 @@
   .cast{display:flex;justify-content:center;align-items:flex-end;gap:2px;height:min(18vh,140px);position:relative}
   .cast img{height:100%}
   .cast img.small{height:80%}
+  .cast img.py{height:77%}
   .card{position:relative}
   .card .hanamaru{position:absolute;right:10px;top:10px;width:78px;height:78px;transform:rotate(-12deg);animation:stamp .5s .35s both cubic-bezier(.3,1.6,.5,1)}
   @keyframes stamp{from{transform:scale(2.4) rotate(-30deg);opacity:0}to{transform:scale(1) rotate(-12deg);opacity:1}}
@@ -112,6 +113,39 @@
   .btns{display:flex;flex-direction:column;gap:14px;align-items:center}
   .btns .bigbtn{font-size:clamp(22px,6.4vw,30px);padding:12px 36px;min-width:240px}
   .textbtn{background:none;border:none;font-size:18px;color:#6f8f5a;font-weight:800;text-decoration:underline;padding:6px}
+
+  /* LINEなどアプリ内ブラウザで画面が低いときも、全部見える／はみ出したらスクロールできるように */
+  #select,#clear{overflow-y:auto;overflow-x:hidden;justify-content:flex-start;touch-action:pan-y;-webkit-overflow-scrolling:touch;
+    padding-top:calc(env(safe-area-inset-top) + 12px);padding-bottom:calc(env(safe-area-inset-bottom) + 12px)}
+  #select > :first-child{margin-top:auto}
+  #select > :last-child{margin-bottom:auto}
+  #clear .card{margin:auto 0;flex:none}
+  @media (max-height:820px){
+    .card{padding:14px 16px 16px}
+    .card h2{font-size:clamp(32px,9vw,46px)}
+    .card .msg{font-size:clamp(18px,5vw,22px);margin:2px 0 6px}
+    .card .hanamaru{width:60px;height:60px}
+    .cast{height:min(14vh,120px)}
+    .stats{margin:8px 0 4px}
+    .stat{padding:4px 8px}
+    .stat b{font-size:32px}
+    .note{font-size:15px;margin:4px 0 12px}
+    .btns{gap:12px}
+    .btns .bigbtn{font-size:clamp(20px,5.8vw,26px);padding:9px 28px}
+    .textbtn{padding:2px 6px}
+  }
+  @media (max-height:600px){
+    .card h2{font-size:34px}
+    .cast{height:min(11vh,90px)}
+    .stat b{font-size:28px}
+    .stat span{font-size:13px}
+    .note{margin:2px 0 10px}
+    .btns{gap:10px}
+    .btns .bigbtn{padding:7px 24px;box-shadow:0 5px 0 var(--yellow-d),0 8px 14px rgba(0,0,0,.16)}
+    .btns .bigbtn.green{box-shadow:0 5px 0 #4f9a3a,0 8px 14px rgba(0,0,0,.16)}
+    #select h2{margin-bottom:2vh}
+    .stages{gap:2vh}
+  }
 </style>
 </head>
 <body>
@@ -155,7 +189,7 @@
     <h2>ゴール！</h2>
     <div class="msg">ぴょんた、よく がんばったね！</div>
     <div class="cast">
-      <img src="assets/don.png" alt=""><img src="assets/pyonta.png" alt=""><img class="small" src="assets/keroko.png" alt="">
+      <img src="assets/don.png" alt=""><img class="small py" src="assets/pyonta.png" alt=""><img class="small" src="assets/keroko.png" alt="">
     </div>
     <div class="stats">
       <div class="stat star"><b id="statTries">0</b><span>ちょうせんした かず</span></div>
@@ -605,7 +639,7 @@ function drawGoalFriends(gp){
 }
 
 function drawPyonta(){
-  const pos = pyPos(), ph = U * .27, x = pos.x, y = sy(pos.y), feet = y + U * .035;
+  const pos = pyPos(), ph = U * .24, x = pos.x, y = sy(pos.y), feet = y + U * .035;
   if (G.state === 'fall'){
     const t = G.t, d = t < .35 ? (t / .35) * .55 : .55 + .04 * Math.sin((t - .35) * 5);
     ctx.save(); ctx.beginPath(); ctx.rect(0, y - H, W, H + U*.01); ctx.clip();
